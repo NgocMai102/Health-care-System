@@ -1,0 +1,202 @@
+services:
+  user_service:
+    build: ./be/user_service
+    ports:
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/user_db
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+  patient_service:
+    build: ./be/patient_service
+    ports:
+      - "8002:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/patient_db
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+  doctor_service:
+    build: ./be/doctor_service
+    ports:
+      - "8003:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/doctor_db
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+  pharmacy_service:
+    build: ./be/pharmacy_service
+    ports:
+      - "8004:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/pharmacy_db
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+  laboratory_service:
+    build: ./be/laboratory_service
+    ports:
+      - "8005:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/laboratory_db
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+  insurance_service:
+    build: ./be/insurance_service
+    ports:
+      - "8006:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/insurance_db
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+  notification_service:
+    build: ./be/notification_service
+    ports:
+      - "8007:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/notification_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - my-network
+
+  payment_service:
+    build: ./be/payment_service
+    ports:
+      - "8008:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/payment_db
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+  chatbot_rasa:
+    build: ./be/chatbot_service
+    ports:
+      - "5005:5005"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/chatbot_db
+      - PYTHONPATH=/app:/app/rasa:/app/rasa/actions
+    command: rasa run -m /app/rasa/models --enable-api --cors '*' --endpoints /app/rasa/endpoints.yml
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+  chatbot_actions:
+    build: ./be/chatbot_service
+    ports:
+      - "5055:5055"
+    environment:
+      - PYTHONPATH=/app:/app/rasa:/app/rasa/actions
+    command: rasa run actions --actions actions --port 5055 --debug
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+  chatbot_fastapi:
+    build: ./be/chatbot_service
+    ports:
+      - "8009:8000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/chatbot_db
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      - chatbot_rasa
+      - chatbot_actions
+      - postgres
+    networks:
+      - my-network
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+    networks:
+      - my-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - my-network
+
+  api_gateway:
+    build: ./be/api_gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+
+  frontend:
+    build:
+      context: ./fe
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://api_gateway:8080/api
+      - API_URL=http://api_gateway:8080/api
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - api_gateway
+    volumes:
+      - ./fe:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    networks:
+      - my-network
+
+volumes:
+  postgres_data:
+
+networks:
+  my-network:
+    driver: bridge

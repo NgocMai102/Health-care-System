@@ -1,0 +1,88 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Chào bạn",
+        "Xin chào",
+        "Hi",
+        "Hello"
+      ],
+      "responses": [
+        "Chào bạn! Tôi là chatbot tư vấn về bệnh cảm cúm. Hãy mô tả triệu chứng của bạn!",
+        "Xin chào! Tôi có thể giúp bạn suy đoán bệnh từ triệu chứng. Bạn đang cảm thấy thế nào?"
+      ]
+    },
+    {
+      "tag": "flu_diagnosis",
+      "patterns": [
+        "Tôi bị sốt, ho, đau họng, mệt mỏi",
+        "Tôi sốt cao, đau nhức cơ thể, ho khan",
+        "Tôi bị nghẹt mũi, đau đầu, sốt nhẹ, ho",
+        "Triệu chứng của tôi là đau họng, mệt mỏi, sốt"
+      ],
+      "responses": [
+        "Dựa trên triệu chứng bạn mô tả (sốt, ho, đau họng, mệt mỏi), có khả năng cao bạn bị cảm cúm. Hãy nghỉ ngơi, uống nhiều nước, dùng thuốc giảm sốt như paracetamol và tham khảo ý kiến bác sĩ để được kê thuốc kháng virus nếu cần.",
+        "Triệu chứng sốt cao, đau nhức cơ thể, ho khan cho thấy bạn có thể bị cảm cúm. Nên giữ ấm, nghỉ ngơi đầy đủ và đi khám bác sĩ để được tư vấn thêm.",
+        "Với triệu chứng nghẹt mũi, đau đầu, sốt nhẹ và ho, bạn có thể bị cảm cúm hoặc cảm lạnh. Hãy uống nhiều nước, dùng thuốc thông mũi và nghỉ ngơi. Nếu triệu chứng kéo dài, hãy đi khám bác sĩ.",
+        "Đau họng, mệt mỏi và sốt có thể là dấu hiệu của cảm cúm. Bạn nên nghỉ ngơi, súc miệng nước muối, dùng thuốc giảm đau và đi khám nếu triệu chứng nặng hơn."
+      ],
+      "disease": "Cảm cúm",
+      "probability": 0.9
+    },
+    {
+      "tag": "cold_diagnosis",
+      "patterns": [
+        "Tôi bị nghẹt mũi, chảy nước mũi, đau họng",
+        "Tôi hắt hơi, nghẹt mũi, không sốt",
+        "Tôi bị chảy nước mũi, ho nhẹ, đau họng"
+      ],
+      "responses": [
+        "Triệu chứng nghẹt mũi, chảy nước mũi, đau họng cho thấy bạn có thể bị cảm lạnh thông thường. Hãy nghỉ ngơi, uống nước ấm, dùng thuốc thông mũi và súc miệng nước muối.",
+        "Hắt hơi, nghẹt mũi mà không sốt thường là dấu hiệu của cảm lạnh. Bạn nên giữ vệ sinh, uống nhiều nước và nghỉ ngơi để hồi phục.",
+        "Chảy nước mũi, ho nhẹ và đau họng có thể là cảm lạnh. Hãy dùng thuốc giảm ho, nước muối súc miệng và nghỉ ngơi đầy đủ."
+      ],
+      "disease": "Cảm lạnh",
+      "probability": 0.85
+    },
+    {
+      "tag": "other_diagnosis",
+      "patterns": [
+        "Tôi bị đau bụng, buồn nôn",
+        "Tôi bị phát ban, ngứa da",
+        "Tôi bị đau ngực, khó thở"
+      ],
+      "responses": [
+        "Triệu chứng đau bụng, buồn nôn không đặc trưng cho cảm cúm hay cảm lạnh. Bạn nên đi khám bác sĩ để được kiểm tra kỹ hơn.",
+        "Phát ban, ngứa da có thể liên quan đến dị ứng hoặc bệnh khác, không phải cảm cúm. Hãy đến bác sĩ để được chẩn đoán chính xác.",
+        "Đau ngực và0070 và khó thở là triệu chứng nghiêm trọng. Bạn nên đến bệnh viện ngay lập tức để được kiểm tra."
+      ],
+      "disease": "Khác",
+      "probability": 0.1
+    },
+    {
+      "tag": "prevention",
+      "patterns": [
+        "Làm sao phòng cảm cúm?",
+        "Cách tránh bị cảm cúm?",
+        "Phòng ngừa cảm cúm như thế nào?"
+      ],
+      "responses": [
+        "Để phòng cảm cúm, bạn nên tiêm vắc-xin cúm hàng năm, rửa tay thường xuyên, tránh tiếp xúc gần với người bệnh và giữ vệ sinh cá nhân.",
+        "Phòng ngừa cảm cúm bằng cách rửa tay sạch, đeo khẩu trang ở nơi đông người, và tiêm phòng vắc-xin cúm."
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "Tạm biệt",
+        "Bye",
+        "Chào tạm biệt"
+      ],
+      "responses": [
+        "Tạm biệt! Chúc bạn khỏe mạnh!",
+        "Bye! Hãy giữ sức khỏe nhé!"
+      ]
+    }
+  ]
+}

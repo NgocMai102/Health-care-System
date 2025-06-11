@@ -1,0 +1,60 @@
+_format_version: "2.1"
+services:
+  - name: user_service
+    url: http://user_service:8000/
+    routes:
+      - name: user_route
+        paths:
+          - /api/users
+          - /api/users/register/
+          - /api/token
+          - /api/token/refresh
+        strip_path: false
+  - name: patient_service
+    url: http://patient_service:8000/
+    routes:
+      - name: patient_route
+        paths:
+          - /api/patients/
+          - /api/appointments/
+        strip_path: false
+  - name: doctor_service
+    url: http://doctor_service:8000/
+    routes:
+      - name: doctor_route
+        paths:
+          - /api/doctors/
+          - /api/diagnoses/
+          - /api/diagnose/
+        strip_path: false
+  - name: pharmacy_service
+    url: http://pharmacy_service:8000/
+    routes:
+      - name: pharmacy_route
+        paths:
+          - /api/prescriptions/
+          - /api/medicines/
+        strip_path: false
+  - name: laboratory_service
+    url: http://laboratory_service:8000/
+    routes:
+      - name: laboratory_route
+        paths:
+          - /api/lab_requests/
+          - /api/lab_results/
+        strip_path: false
+  - name: insurance_service
+    url: http://insurance_service:8000/
+    routes:
+      - name: insurance_route
+        paths:
+          - /api/insurance_contracts/
+          - /api/claims/
+        strip_path: false
+  - name: chatbot_fastapi
+    url: http://chatbot_fastapi:8000/
+    routes:
+      - name: chatbot_route
+        paths:
+          - /api/chat/
+        strip_path: false
